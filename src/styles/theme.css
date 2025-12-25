@@ -8,37 +8,64 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #030213;
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.95 0.0058 264.53);
-  --secondary-foreground: #030213;
-  --muted: #ececf0;
-  --muted-foreground: #717182;
-  --accent: #e9ebef;
-  --accent-foreground: #030213;
-  --destructive: #d4183d;
+  
+  /* Futuristic Blue-to-Purple Gradient Theme */
+  --primary: #4F46E5; /* Indigo-600 */
+  --primary-foreground: #ffffff;
+  --secondary: #8B5CF6; /* Violet-500 */
+  --secondary-foreground: #ffffff;
+  --accent: #EC4899; /* Pink-500 for highlights */
+  --accent-foreground: #ffffff;
+  
+  /* AI Intelligence Colors */
+  --ai-primary: #6366F1; /* Indigo-500 */
+  --ai-glow: rgba(99, 102, 241, 0.4);
+  --ai-pulse: rgba(139, 92, 246, 0.3);
+  
+  /* Status Colors */
+  --success: #10B981; /* Green-500 */
+  --success-foreground: #ffffff;
+  --warning: #F59E0B; /* Amber-500 */
+  --warning-foreground: #ffffff;
+  --danger: #EF4444; /* Red-500 */
+  --danger-foreground: #ffffff;
+  
+  /* Traffic Light System */
+  --status-pass: #10B981;
+  --status-warning: #F59E0B;
+  --status-fail: #EF4444;
+  
+  /* DNA Strip Colors */
+  --dna-co: #3B82F6; /* Blue-500 */
+  --dna-bloom: #8B5CF6; /* Violet-500 */
+  --dna-difficulty: #F59E0B; /* Amber-500 */
+  --dna-cognitive: #EC4899; /* Pink-500 */
+  
+  --muted: #F3F4F6;
+  --muted-foreground: #6B7280;
+  --destructive: #EF4444;
   --destructive-foreground: #ffffff;
   --border: rgba(0, 0, 0, 0.1);
   --input: transparent;
-  --input-background: #f3f3f5;
-  --switch-background: #cbced4;
+  --input-background: #F9FAFB;
+  --switch-background: #D1D5DB;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
+  --ring: #6366F1;
+  --chart-1: #3B82F6;
+  --chart-2: #8B5CF6;
+  --chart-3: #EC4899;
+  --chart-4: #10B981;
+  --chart-5: #F59E0B;
+  --radius: 0.75rem;
+  --sidebar: #FAFAFA;
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #030213;
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-primary: #4F46E5;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #F3F4F6;
   --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-border: #E5E7EB;
+  --sidebar-ring: #6366F1;
 }
 
 .dark {

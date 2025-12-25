@@ -9,6 +9,7 @@ import { Reports } from './components/reports/Reports';
 import { Outcomes } from './components/outcomes/Outcomes';
 import { Navbar } from './components/shared/Navbar';
 import { Footer } from './components/shared/Footer';
+import { OutcomeIntelligenceHUD } from './components/shared/OutcomeIntelligenceHUD';
 import { Toaster } from './components/ui/sonner';
 
 export type UserRole = 'teacher' | 'student' | null;
@@ -17,6 +18,7 @@ export type Page = 'landing' | 'login' | 'dashboard' | 'generator' | 'auditor' |
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('landing');
   const [userRole, setUserRole] = useState<UserRole>(null);
+  const [whyViewEnabled, setWhyViewEnabled] = useState(false);
 
   const handleLogin = (role: UserRole) => {
     setUserRole(role);
@@ -44,12 +46,12 @@ function App() {
         return <LoginPage onLogin={handleLogin} onBack={() => navigateTo('landing')} />;
       case 'dashboard':
         return userRole === 'teacher' ? (
-          <TeacherDashboard />
+          <TeacherDashboard whyViewEnabled={whyViewEnabled} />
         ) : (
           <StudentDashboard />
         );
       case 'generator':
-        return <QuestionGenerator />;
+        return <QuestionGenerator whyViewEnabled={whyViewEnabled} />;
       case 'auditor':
         return <Auditor />;
       case 'reports':
@@ -62,14 +64,19 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-indigo-50/20 to-violet-50/30">
       {userRole && (
-        <Navbar
-          userRole={userRole}
-          onLogout={handleLogout}
-          onNavigate={navigateTo}
-          currentPage={currentPage}
-        />
+        <>
+          <Navbar
+            userRole={userRole}
+            onLogout={handleLogout}
+            onNavigate={navigateTo}
+            currentPage={currentPage}
+            whyViewEnabled={whyViewEnabled}
+            onToggleWhyView={() => setWhyViewEnabled(!whyViewEnabled)}
+          />
+          {userRole === 'teacher' && <OutcomeIntelligenceHUD />}
+        </>
       )}
       <main className="flex-1">
         {renderPage()}

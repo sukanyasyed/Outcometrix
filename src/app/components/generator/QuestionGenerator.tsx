@@ -18,7 +18,11 @@ export interface Question {
   justification: string;
 }
 
-export function QuestionGenerator() {
+interface QuestionGeneratorProps {
+  whyViewEnabled?: boolean;
+}
+
+export function QuestionGenerator({ whyViewEnabled }: QuestionGeneratorProps) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -92,13 +96,15 @@ export function QuestionGenerator() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="mb-2">Question Bank Generator</h1>
+          <h1 className="mb-2 bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+            Question Bank Generator
+          </h1>
           <p className="text-gray-600">
-            Generate outcome-aligned questions with AI-powered controls
+            Generate outcome-aligned questions with AI-powered controls and explainability
           </p>
         </div>
 
@@ -114,20 +120,33 @@ export function QuestionGenerator() {
           {/* Question List */}
           <div className="lg:col-span-2">
             {questions.length === 0 ? (
-              <Card className="h-full">
+              <Card className="h-full border-t-4 border-t-indigo-500">
                 <CardContent className="flex flex-col items-center justify-center py-20">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mb-4">
-                    <Sparkles className="w-8 h-8 text-blue-600" />
+                  <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-indigo-200">
+                    <Sparkles className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="mb-2">No Questions Generated Yet</h3>
+                  <h3 className="mb-2 bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+                    No Questions Generated Yet
+                  </h3>
                   <p className="text-gray-600 text-center max-w-md mb-6">
                     Configure your generation parameters on the left and click "Generate Questions" to create your AI-powered question bank.
                   </p>
                   <Button
                     onClick={() => handleGenerate({})}
                     disabled={isGenerating}
+                    className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-lg shadow-indigo-200"
                   >
-                    {isGenerating ? 'Generating...' : 'Generate Sample Questions'}
+                    {isGenerating ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-4 h-4 mr-2" />
+                        Generate Sample Questions
+                      </>
+                    )}
                   </Button>
                 </CardContent>
               </Card>
@@ -136,6 +155,7 @@ export function QuestionGenerator() {
                 questions={questions}
                 onSelectQuestion={setSelectedQuestion}
                 onRegenerateQuestion={handleRegenerateQuestion}
+                whyViewEnabled={whyViewEnabled}
               />
             )}
           </div>
