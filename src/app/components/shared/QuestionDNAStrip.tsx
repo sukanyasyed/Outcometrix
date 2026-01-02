@@ -1,11 +1,22 @@
+import { useTopic } from '../../contexts/TopicContext';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
+
 interface QuestionDNAStripProps {
   co: string;
   bloom: string;
   difficulty: string;
   cognitiveLoad: string;
+  showTooltip?: boolean;
 }
 
-export function QuestionDNAStrip({ co, bloom, difficulty, cognitiveLoad }: QuestionDNAStripProps) {
+export function QuestionDNAStrip({ co, bloom, difficulty, cognitiveLoad, showTooltip = true }: QuestionDNAStripProps) {
+  const { theme } = useTopic();
+  
   // Calculate segment widths based on values
   const getCoWeight = (co: string) => {
     const coNum = parseInt(co.replace('CO', ''));
@@ -27,42 +38,95 @@ export function QuestionDNAStrip({ co, bloom, difficulty, cognitiveLoad }: Quest
     return widths[load as keyof typeof widths] || 20;
   };
 
+  // Use theme colors for DNA segments
   const segments = [
-    { color: 'bg-[#3B82F6]', width: getCoWeight(co), label: co },
-    { color: 'bg-[#8B5CF6]', width: getBloomDepth(bloom), label: bloom },
-    { color: 'bg-[#F59E0B]', width: getDifficultyWidth(difficulty), label: difficulty },
-    { color: 'bg-[#EC4899]', width: getCognitiveWidth(cognitiveLoad), label: cognitiveLoad },
+    { 
+      color: theme.primaryColor, 
+      bgColor: 'bg-[var(--dna-co)]',
+      width: getCoWeight(co), 
+      label: co,
+      name: 'Course Outcome',
+      description: `This question maps to ${co}` 
+    },
+    { 
+      color: theme.secondaryColor, 
+      bgColor: 'bg-[var(--dna-bloom)]',
+      width: getBloomDepth(bloom), 
+      label: bloom,
+      name: 'Bloom Level',
+      description: `Cognitive level: ${bloom} - ${getBloomName(bloom)}` 
+    },
+    { 
+      color: '#F59E0B', 
+      bgColor: 'bg-[var(--dna-difficulty)]',
+      width: getDifficultyWidth(difficulty), 
+      label: difficulty,
+      name: 'Difficulty',
+      description: `Difficulty level: ${difficulty}` 
+    },
+    { 
+      color: '#EC4899', 
+      bgColor: 'bg-[var(--dna-cognitive)]',
+      width: getCognitiveWidth(cognitiveLoad), 
+      label: cognitiveLoad,
+      name: 'Cognitive Load',
+      description: `Expected cognitive effort: ${cognitiveLoad}` 
+    },
   ];
+  
+  function getBloomName(bloom: string): string {
+    const names: Record<string, string> = {
+      'L1': 'Remember',
+      'L2': 'Understand',
+      'L3': 'Apply',
+      'L4': 'Analyze',
+      'L5': 'Evaluate',
+      'L6': 'Create',
+    };
+    return names[bloom] || 'Unknown';
+  }
 
   return (
-    <div className="relative">
-      <div className="flex h-2 rounded-full overflow-hidden bg-gray-100">
-        {segments.map((segment, idx) => (
-          <div
-            key={idx}
-            className={`${segment.color} transition-all duration-300 hover:opacity-80`}
-            style={{ width: `${segment.width}%` }}
-          />
-        ))}
+    <TooltipProvider>
+      <div className="relative">
+        <div className="flex h-2.5 rounded-full overflow-hidden bg-gray-100 shadow-inner">
+          {segments.map((segment, idx) => (
+            <Tooltip key={idx}>
+              <TooltipTrigger asChild>
+                <div
+                  className={`transition-all duration-300 hover:opacity-80 cursor-pointer`}
+                  style={{ 
+                    width: `${segment.width}%`,
+                    backgroundColor: segment.color 
+                  }}
+                />
+              </TooltipTrigger>
+              {showTooltip && (
+                <TooltipContent 
+                  className="bg-gray-900 text-white border-gray-700"
+                  style={{ borderLeftColor: segment.color, borderLeftWidth: '3px' }}
+                >
+                  <div className="text-xs">
+                    <div className="font-semibold mb-1">{segment.name}</div>
+                    <div className="text-gray-300">{segment.description}</div>
+                  </div>
+                </TooltipContent>
+              )}
+            </Tooltip>
+          ))}
+        </div>
+        <div className="flex justify-between mt-2 text-xs text-gray-600">
+          {segments.map((segment, idx) => (
+            <span key={idx} className="flex items-center gap-1.5">
+              <div 
+                className="w-2 h-2 rounded-full shadow-sm"
+                style={{ backgroundColor: segment.color }}
+              ></div>
+              <span className="font-medium">{segment.label}</span>
+            </span>
+          ))}
+        </div>
       </div>
-      <div className="flex justify-between mt-1.5 text-xs text-gray-500">
-        <span className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full bg-[#3B82F6]"></div>
-          {segments[0].label}
-        </span>
-        <span className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full bg-[#8B5CF6]"></div>
-          {segments[1].label}
-        </span>
-        <span className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full bg-[#F59E0B]"></div>
-          {segments[2].label}
-        </span>
-        <span className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full bg-[#EC4899]"></div>
-          {segments[3].label}
-        </span>
-      </div>
-    </div>
+    </TooltipProvider>
   );
 }

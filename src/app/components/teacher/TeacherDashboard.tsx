@@ -7,6 +7,7 @@ import { OutcomeCoverageHeatmap } from './OutcomeCoverageHeatmap';
 import { TopicDistributionChart } from './TopicDistributionChart';
 import { RecentActivity } from './RecentActivity';
 import { OutcomeDriftCompass } from '../shared/OutcomeDriftCompass';
+import { useTopic } from '../../contexts/TopicContext';
 import {
   Tooltip,
   TooltipContent,
@@ -19,6 +20,8 @@ interface TeacherDashboardProps {
 }
 
 export function TeacherDashboard({ whyViewEnabled }: TeacherDashboardProps) {
+  const { theme } = useTopic();
+  
   const metrics = [
     {
       title: 'CO Coverage',
@@ -29,7 +32,7 @@ export function TeacherDashboard({ whyViewEnabled }: TeacherDashboardProps) {
       bgGradient: 'from-blue-500 to-cyan-500',
       status: 'good',
       aiConfidence: 94,
-      explanation: 'AI detected 87% coverage across all Course Outcomes with high confidence based on question bank analysis',
+      explanation: `AI detected 87% coverage across all ${theme.name} Course Outcomes with high confidence based on question bank analysis`,
     },
     {
       title: 'Bloom Balance',
@@ -40,7 +43,7 @@ export function TeacherDashboard({ whyViewEnabled }: TeacherDashboardProps) {
       bgGradient: 'from-green-500 to-emerald-500',
       status: 'good',
       aiConfidence: 91,
-      explanation: 'Question distribution across Bloom levels is optimal for comprehensive assessment',
+      explanation: `Question distribution across Bloom levels is optimal for comprehensive ${theme.name} assessment`,
     },
     {
       title: 'Difficulty Balance',
@@ -51,7 +54,7 @@ export function TeacherDashboard({ whyViewEnabled }: TeacherDashboardProps) {
       bgGradient: 'from-amber-500 to-orange-500',
       status: 'warning',
       aiConfidence: 88,
-      explanation: 'Difficulty distribution needs adjustment - consider adding more hard-level questions',
+      explanation: `Difficulty distribution in ${theme.name} questions needs adjustment - consider adding more hard-level questions`,
     },
     {
       title: 'AI Confidence',
@@ -85,9 +88,25 @@ export function TeacherDashboard({ whyViewEnabled }: TeacherDashboardProps) {
               <Shield className="w-4 h-4 text-indigo-600" />
               <span className="text-sm font-medium text-indigo-700">AI-Powered</span>
             </div>
+            {/* Topic Badge */}
+            <div 
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full border-2"
+              style={{
+                backgroundColor: theme.primaryColor + '15',
+                borderColor: theme.primaryColor + '40',
+              }}
+            >
+              <theme.icon 
+                className="w-4 h-4" 
+                style={{ color: theme.primaryColor }}
+              />
+              <span className="text-sm font-medium" style={{ color: theme.primaryColor }}>
+                {theme.name}
+              </span>
+            </div>
           </div>
           <p className="text-gray-600">
-            Real-time outcome alignment and quality metrics with explainable AI insights
+            Real-time outcome alignment and quality metrics with explainable AI insights • {theme.description}
           </p>
         </div>
 
